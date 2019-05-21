@@ -15,8 +15,8 @@ from mpl_toolkits.mplot3d import Axes3D
 
 #ball=sphere(pos=vector(0,0,0), radius=40)
 
-def func(z, T, M):
-    # z
+def func(f, T, M):
+    # f
     t, r, theta, phi, pt, pr, ptheta, pphi = f
     # derivatives
     dpthetadT = (cos(theta)*(ptheta)**2)/((r**2)*sin(phi)**3)
@@ -65,13 +65,15 @@ def sph_to_cart(theta, phi, r):
 g0=(r0 * np.outer(np.cos(phi0), r0 * np.outer(np.sin(phi0), np.sin(theta)), 
                   r0 * np.outer(np.ones(np.size(phi0)), np.cos(theta)))
 
-# sph=odeint(sph_to_cart, g0, T, args=(M,))
+# odeint g
+sph=odeint(sph_to_cart, g0, T)
 
 plt.figure(1)
 plt.axes(projection="3d")
-plt.plot(T, xx[:1], 'b', label='x') #xx[:1] = 1st element of the matrix (array) => r, 'b' = color blue
-plt.plot(T, xx[:2], 'r', label='y')
-plt.plot(T, xx[:3], 'k', label='z')
+# plt.plot(T, xx[:1], 'b', label='x') #xx[:1] = 1st element of the matrix (array) => r, 'b' = color blue
+# plt.plot(T, xx[:2], 'r', label='y')
+# plt.plot(T, xx[:3], 'k', label='z')
+plt.plot(T, sph[:1], sph[:2], sph[:3])
 plt.legend()
 plt.show()
 
