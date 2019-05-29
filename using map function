@@ -14,7 +14,7 @@ from mpl_toolkits.mplot3d import Axes3D
 
 def func(f, T, M):
     # f
-    [t, r, theta, phi, pt, pr, ptheta, pphi] = f
+    t, r, theta, phi, pt, pr, ptheta, pphi = f
     # derivatives
     dpthetadT = (cos(theta)*(ptheta)**2)/((r**2)*sin(phi)**3)
     dprdT = (pphi**2/r**3)-(M/(r-2*M)**2)-((M*pr**2)/r**2)
