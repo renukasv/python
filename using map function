@@ -49,7 +49,7 @@ def sph2cart(r, theta, phi):
 
 f = [t, r, theta, phi, pt, pr, ptheta, pphi]
 
-map(sph2cart, f)
+map(sph2cart, r, theta, phi)
 
 plt.figure()
 plt.axes(projection="3d")
