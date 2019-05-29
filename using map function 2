@@ -1,0 +1,107 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Wed May 29 10:00:56 2019
+
+@author: renuka
+"""
+
+import numpy as np
+from scipy.integrate import odeint
+import matplotlib.pyplot as plt
+from math import *
+from mpl_toolkits.mplot3d import Axes3D
+
+def func(f, T, M):
+    # f
+    [t, r, theta, phi, pt, pr, ptheta, pphi] = f
+    # derivatives
+    dpthetadT = (cos(theta)*(ptheta)**2)/((r**2)*sin(phi)**3)
+    dprdT = (pphi**2/r**3)-(M/(r-2*M)**2)-((M*pr**2)/r**2)
+    dtdT = (1+(2*M/r))*pt
+    drdT = (1-(2*M/r)*pr)
+    dthetadT = ptheta/(r**2)
+    dphidT = pphi/((r**2)*(sin(theta)**2))
+    return (dtdT, drdT, dthetadT, dphidT, dptdT, dprdT, dpthetadT, dpphidT)
+
+# initial conditions and constants
+pt = -1
+dptdT = 0
+ptheta = 0
+dpphidT = 0
+M = 9999
+theta = np.radians(pi/2)
+phi0 = np.radians(pi/4)
+r0 = 4790
+
+f0=[0, 4600, np.radians(pi/2), np.radians(pi/4), -1, 0.5, 0, 0.7] # initial conditions, necessary to find the constants after the return operation 
+
+T = np.linspace(-1000, 900, 900) # time variation between -1000s and 900s with a total of 900 calculations
+
+xx=odeint(func, f0, T, args=(M,)) # generate the solution, args=() is to add M to the equations
+
+# spherical to cartesian coordinates 
+def sph2cart(r, theta, phi):
+    x = r * np.cos(phi) * np.sin(theta)
+    y = r * np.sin(phi) * np.sin(theta)
+    z = r * np.cos(theta)
+    return (x, y, z)
+
+f = [t, r, theta, phi, pt, pr, ptheta, pphi]
+
+import numpy as np
+from scipy.integrate import odeint
+import matplotlib.pyplot as plt
+from math import *
+from mpl_toolkits.mplot3d import Axes3D
+
+def func(f, T, M):
+    # f
+    [t, r, theta, phi, pt, pr, ptheta, pphi] = f
+    # derivatives
+    dpthetadT = (cos(theta)*(ptheta)**2)/((r**2)*sin(phi)**3)
+    dprdT = (pphi**2/r**3)-(M/(r-2*M)**2)-((M*pr**2)/r**2)
+    dtdT = (1+(2*M/r))*pt
+    drdT = (1-(2*M/r)*pr)
+    dthetadT = ptheta/(r**2)
+    dphidT = pphi/((r**2)*(sin(theta)**2))
+    return (dtdT, drdT, dthetadT, dphidT, dptdT, dprdT, dpthetadT, dpphidT)
+
+# initial conditions and constants
+pt = -1
+dptdT = 0
+ptheta = 0
+dpphidT = 0
+M = 9999
+theta = np.radians(pi/2)
+phi0 = np.radians(pi/4)
+r0 = 4790
+
+f0=[0, 4600, np.radians(pi/2), np.radians(pi/4), -1, 0.5, 0, 0.7] # initial conditions, necessary to find the constants after the return operation 
+
+T = np.linspace(-1000, 900, 900) # time variation between -1000s and 900s with a total of 900 calculations
+
+xx=odeint(func, f0, T, args=(M,)) # generate the solution, args=() is to add M to the equations
+
+# spherical to cartesian coordinates 
+def sph2cart(r, theta, phi):
+    x = r * np.cos(phi) * np.sin(theta)
+    y = r * np.sin(phi) * np.sin(theta)
+    z = r * np.cos(theta)
+    return (x, y, z)
+
+f = [t, r, theta, phi, pt, pr, ptheta, pphi]
+
+map(sph2cart, f)
+
+plt.figure()
+plt.axes(projection="3d")
+plt.plot(T, xx[:1], T, xx[:2], T, xx[:3]) # 2nd, 3rd and 4th values of f => r, theta, phi
+plt.legend()
+plt.show()
+
+plt.figure()
+plt.axes(projection="3d")
+plt.plot(T, xx[:1], T, xx[:2], T, xx[:3]) # 2nd, 3rd and 4th values of f => r, theta, phi
+plt.legend()
+plt.show()
