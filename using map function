@@ -99,9 +99,3 @@ plt.axes(projection="3d")
 plt.plot(T, xx[:1], T, xx[:2], T, xx[:3]) # 2nd, 3rd and 4th values of f => r, theta, phi
 plt.legend()
 plt.show()
-
-plt.figure()
-plt.axes(projection="3d")
-plt.plot(T, xx[:1], T, xx[:2], T, xx[:3]) # 2nd, 3rd and 4th values of f => r, theta, phi
-plt.legend()
-plt.show()
