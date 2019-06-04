@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Wed May 29 10:00:56 2019
+Created on Wed May 29 10:09:39 2019
 
 @author: renuka
 """
@@ -30,11 +30,15 @@ dptdT = 0
 ptheta = 0
 dpphidT = 0
 M = 9999
-theta = np.radians(pi/2)
-phi0 = np.radians(pi/4)
+t0 = 0
 r0 = 4790
+theta = np.radians(pi/2)
+phi0 = np.radians(pi/4) # angular momentum p = "amount of rotational motion"
+pr0 = 0.5
+ptheta0 = 0
+pphi0 = 0.7
 
-f0=[0, 4600, np.radians(pi/2), np.radians(pi/4), -1, 0.5, 0, 0.7] # initial conditions, necessary to find the constants after the return operation 
+f0=[t0, r0, theta, phi0, pt, pr0, ptheta0, pphi0] # initial conditions, necessary to find the constants after the return operation 
 
 T = np.linspace(-1000, 900, 900) # time variation between -1000s and 900s with a total of 900 calculations
 
@@ -42,17 +46,15 @@ xx=odeint(func, f0, T, args=(M,)) # generate the solution, args=() is to add M t
 
 # spherical to cartesian coordinates 
 def sph2cart(r, theta, phi):
-    x = r * np.cos(phi) * np.sin(theta)
-    y = r * np.sin(phi) * np.sin(theta)
-    z = r * np.cos(theta)
+    x = xx[:1] * np.cos(xx[:3]) * np.sin(xx[:2])
+    y = xx[:1] * np.sin(xx[:3]) * np.sin(xx[:2])
+    z = xx[:1] * np.cos(xx[:2])
     return (x, y, z)
 
-f = [t, r, theta, phi, pt, pr, ptheta, pphi]
-
-map(sph2cart, r, theta, phi) # to apply sph2cart to every r, theta and phi value
+yy=list(map(sph2cart, xx[:1], xx[:2], xx[:3])) #map isn't a list => needs to be a list ¿ # to apply sph2cart to every r, theta and phi value
 
 plt.figure()
 plt.axes(projection="3d")
-plt.plot(T, xx[:1], T, xx[:2], T, xx[:3]) # 2nd, 3rd and 4th values of f => r, theta, phi
+plt.plot(T, yy[:0], T, yy[:1], T, yy[:2]) # 2nd, 3rd and 4th values of f => r, theta, phi
 plt.legend()
 plt.show()
