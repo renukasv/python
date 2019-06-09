@@ -36,7 +36,7 @@ t0 = 0
 r0 = ((2*G*M)/(c**2)) + 2000
 theta = np.radians(pi/2)
 phi0 = np.radians(pi/4) # angular momentum p = "amount of rotational motion"
-pr0 = 0.5
+pr0 = 0.5 # between 0.5 and 0.6s¿ 0.5 works the best
 ptheta0 = 0
 pphi0 = 0.7
 
