@@ -42,8 +42,9 @@ pphi0 = 0.7
 
 f0=np.array([t0, r0, theta, phi0, pt, pr0, ptheta0, pphi0]) # initial conditions, necessary to find the constants after the return operation 
 
-T = np.linspace(0, 1750, 900) # time variation between 0s and 10000s with a total of 900 calculations
-# between 0s and 1350-4000s\[4000]
+T = np.linspace(0, 1360, 900) # time variation between 0s and 10000s with a total of 900 calculations
+# with r0 = [...] + 2000 : between 0s and 1350-4000s\[4000]
+# with r0 = [...] + 4000 : between 0s and 6900-
 
 xx=odeint(func, f0, T, args=(M,)) # generate the solution, args=() is to add M to the equations
 
