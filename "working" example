@@ -25,22 +25,24 @@ def func(f, T, M):
     return np.array([dtdT, drdT, dthetadT, dphidT, dptdT, dprdT, dpthetadT, dpphidT])
 
 # initial conditions and constants
+G = 6.67428 * 10**-11
+c = 299792458
 pt = -1
 dptdT = 0
 ptheta = 0
 dpphidT = 0
-M = 9999
+M = 5000
 t0 = 0
-r0 = 4790
+r0 = ((2*G*M)/(c**2)) + 2000
 theta = np.radians(pi/2)
 phi0 = np.radians(pi/4) # angular momentum p = "amount of rotational motion"
 pr0 = 0.5
 ptheta0 = 0
 pphi0 = 0.7
 
-f0=array([t0, r0, theta, phi0, pt, pr0, ptheta0, pphi0]) # initial conditions, necessary to find the constants after the return operation 
+f0=np.array([t0, r0, theta, phi0, pt, pr0, ptheta0, pphi0]) # initial conditions, necessary to find the constants after the return operation 
 
-T = np.linspace(-1000, 900, 900) # time variation between -1000s and 900s with a total of 900 calculations
+T = np.linspace(0, 4000, 900) # time variation between 0s and 10000s with a total of 900 calculations
 
 xx=odeint(func, f0, T, args=(M,)) # generate the solution, args=() is to add M to the equations
 
