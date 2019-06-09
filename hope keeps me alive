@@ -54,11 +54,13 @@ Y = r * np.sin(phi) * np.sin(theta)
 Z = r * np.cos(theta)
 fig = plt.figure()
 ax = fig.add_subplot(1,1,1, projection="3d")
-plot = ax.plot_trisurf(X, Y, Z, linewidth=0, antialiased=False)
+plot = ax.plot_trisurf(T, X, Y, Z, linewidth=0, antialiased=False)
 
-# T2 = np.linspace(-1000, 900, 900)
-# k0=array([r0*np.cos(phi0)*np.sin(theta), r0*np.sin(phi0)*np.sin(theta), r0*np.cos(theta)])
-# yy=odeint(sph2cart, k0, T2, args=(r, theta, phi))
-# yy=map(sph2cart, xx[:, 1], xx[:, 2], xx[:, 3]) #map isn't a list => needs to be a list ¿ # to apply sph2cart to every r, theta and phi value
-
+ax.set_xlabel('X axis')
+ax.set_ylabel('Y axis')
+ax.set_zlabel('Z axis')
+# ax.set_xlim(-1000, 1000)
+# ax.set_ylim(0, 200)
+# ax.set_zlim(0, 10)
 plt.show()
+
