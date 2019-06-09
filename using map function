@@ -69,5 +69,5 @@ r, theta, phi = plot(np.array(yy)[:, 0], np.array(yy)[:, 1], np.array(yy)[:, 2])
 
 plt.figure()
 plt.axes(projection="3d")
-plt.plot(T, yy[:, 0], yy[:, 1], yy[:, 2])
+# plt.plot(T, yy[:, 0], yy[:, 1], yy[:, 2])
 plt.show()
