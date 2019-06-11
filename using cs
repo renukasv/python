@@ -27,6 +27,8 @@ def func(f, T, M):
     return np.array([dtdT, drdT, dthetadT, dphidT, dptdT, dprdT, dpthetadT, dpphidT])
 
 # initial conditions and constants
+G = 6.67408*(10**-11)
+c = 299792458
 pt = -1
 dptdT = 0
 ptheta = 0
@@ -36,13 +38,13 @@ t0 = 0
 r0 = 4790
 theta = np.radians(pi/2)
 phi0 = np.radians(pi/4) # angular momentum p = "amount of rotational motion"
-pr0 = 0.5
+pr0 = 0.6 # D = [0.1;0.65]
 ptheta0 = 0
-pphi0 = 0.7
+pphi0 = 1.5
 
 f0=np.array([t0, r0, theta, phi0, pt, pr0, ptheta0, pphi0]) # initial conditions, necessary to find the constants after the return operation 
 
-T = np.linspace(-1000, 900, 900) # time variation between -1000s and 900s with a total of 900 calculations
+T = np.linspace(0, 10000, 9000) # time variation between -1000s and 900s with a total of 900 calculations
 
 xx=odeint(func, f0, T, args=(M,)) # generate the solution, args=() is to add M to the equations
 
@@ -53,7 +55,33 @@ phi = xx[:, 3]
 # spherical to cartesian
 x, y, z = cs.sp2cart(r, theta, phi)
 
-plt.figure()
+fig = plt.figure()
+# ax = fig.add_subplot(1,1,1, projection="3d")
+# plot = ax.plot_trisurf(T, x, y, z, linewidth=0, antialiased=False)
+
+# axes
+ax = fig.add_subplot(1,1,1, projection="3d")
+
+plt.xlabel('X axis')
+plt.ylabel('Y axis')
+# plt.zlabel('Z axis')
+
+# black sphere
+fig2 = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+
+u = np.linspace(0, 2 * np.pi, 100)
+v = np.linspace(0, np.pi, 100)
+
+rs = 2*G*M/c**2
+
+x1 = rs * np.outer(np.cos(u), np.sin(v))
+y1 = rs * np.outer(np.sin(u), np.sin(v))
+z1 = rs * np.outer(np.ones(np.size(u)), np.cos(v))
+
+
 plt.axes(projection="3d")
-plt.plot(T, x, y, z)
+# plt.plot(xx[:, 0], xx[:, 1], xx[:, 2]) # trying to plot a vector with time 
+plt.plot(x, y, z)
+ax.plot_surface(x1, y1, z1, rstride=4, cstride=4, color='k')
 plt.show()
