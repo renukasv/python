@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Sun Jun  9 11:42:20 2019
+Created on Tue Jun 11 21:26:48 2019
 
 @author: renuka
 """
+
 
 import numpy as np
 from scipy.integrate import odeint
@@ -56,32 +57,29 @@ phi = xx[:, 3]
 x, y, z = cs.sp2cart(r, theta, phi)
 
 fig = plt.figure()
-# ax = fig.add_subplot(1,1,1, projection="3d")
 # plot = ax.plot_trisurf(T, x, y, z, linewidth=0, antialiased=False)
 
 # axes
-ax = fig.add_subplot(1,1,1, projection="3d")
 
 plt.xlabel('X axis')
 plt.ylabel('Y axis')
 # plt.zlabel('Z axis')
 
 # black sphere
-fig2 = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
+#fig2 = plt.figure()
 
-u = np.linspace(0, 2 * np.pi, 100)
-v = np.linspace(0, np.pi, 100)
+#u = np.linspace(0, 2 * np.pi, 100)
+#v = np.linspace(0, np.pi, 100)
 
-rs = 2*G*M/c**2
+#rs = 2*G*M/c**2
 
-x1 = rs * np.outer(np.cos(u), np.sin(v))
-y1 = rs * np.outer(np.sin(u), np.sin(v))
-z1 = rs * np.outer(np.ones(np.size(u)), np.cos(v))
+#x1 = rs * np.outer(np.cos(u), np.sin(v))
+#y1 = rs * np.outer(np.sin(u), np.sin(v))
+#z1 = rs * np.outer(np.ones(np.size(u)), np.cos(v))
 
 
 plt.axes(projection="3d")
 # plt.plot(xx[:, 0], xx[:, 1], xx[:, 2]) # trying to plot a vector with time 
 plt.plot(x, y, z)
-ax.plot_surface(x1, y1, z1, rstride=4, cstride=4, color='k')
+# ax.plot_surface(x1, y1, z1, rstride=4, cstride=4, color='k')
 plt.show()
