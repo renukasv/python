@@ -38,7 +38,7 @@ theta = np.radians(pi/2)
 phi0 = np.radians(pi/4) # angular momentum p = "amount of rotational motion"
 pr0 = 0.5 # between 0.5 and 0.6s¿ 0.5 works the best
 ptheta0 = 0
-pphi0 = 0.5
+pphi0 = 3.8
 
 f0=np.array([t0, r0, theta, phi0, pt, pr0, ptheta0, pphi0]) # initial conditions, necessary to find the constants after the return operation 
 
@@ -63,7 +63,6 @@ ax = fig.add_subplot(1,1,1, projection="3d")
 
 u = np.linspace(0, 2 * np.pi, 100)
 v = np.linspace(0, np.pi, 100)
-ax.plot_surface(x, y, z, rstride=4, cstride=4, color='k')
 
 
 r = rs = 2*G*M/c**2
@@ -72,13 +71,12 @@ x = r * np.outer(np.cos(u), np.sin(v))
 y = r * np.outer(np.sin(u), np.sin(v))
 z = r * np.outer(np.ones(np.size(u)), np.cos(v))
 
-fig = plt.figure()
-ax = fig.add_subplot(1,1,1, projection="3d")
 ax.plot3D(X, Y, Z)
+ax.plot_surface(x, y, z, rstride=4, cstride=4, color='k')
 ax.set_xlabel('X axis')
 ax.set_ylabel('Y axis')
 ax.set_zlabel('Z axis')
-# ax.set_xlim(-1000, 1000)
-# ax.set_ylim(0, 200)
-# ax.set_zlim(0, 10)
+ax.set_xlim(-30, 60)
+ax.set_ylim(0, 40)
+ax.set_zlim(0, 1000)
 plt.show()
