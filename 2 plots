@@ -29,7 +29,7 @@ Y = kk[:, 1]
 Z = kk[:, 2]
 
 
-fig = plt.figure()
+fig = plt.figure(2)
 ax = fig.add_subplot(111, projection='3d')
 
 u = np.linspace(0, 2 * np.pi, 100)
@@ -40,11 +40,8 @@ r = 10
 x = r * np.outer(np.cos(u), np.sin(v))
 y = r * np.outer(np.sin(u), np.sin(v))
 z = r * np.outer(np.ones(np.size(u)), np.cos(v))
-surf = ax.plot_surface(x, y, z, rstride=4, cstride=4, color='k')
+ax.plot_surface(x, y, z, rstride=4, cstride=4, color='k')
 
-
-plt.figure()
-plt.axes(projection="3d")
-plt.plot(X, Y, Z, surf)
+plt.plot(X, Y, Z)
 plt.show()
     
