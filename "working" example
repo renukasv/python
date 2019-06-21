@@ -58,9 +58,8 @@ Y = r * np.sin(phi) * np.sin(theta)
 Z = r * np.cos(theta)
 
 # black sphere
-fig = plt.figure()
-ax = fig.add_subplot(1,1,1, projection="3d")
-
+fig = plt.figure(2)
+ax = fig.add_subplot(111, projection="3d")
 u = np.linspace(0, 2 * np.pi, 100)
 v = np.linspace(0, np.pi, 100)
 
@@ -70,13 +69,19 @@ r = rs = 2*G*M/c**2
 x = r * np.outer(np.cos(u), np.sin(v))
 y = r * np.outer(np.sin(u), np.sin(v))
 z = r * np.outer(np.ones(np.size(u)), np.cos(v))
-
-ax.plot3D(X, Y, Z)
+# plot black sphere
 ax.plot_surface(x, y, z, rstride=4, cstride=4, color='k')
+# plot trajectory
+ax.plot3D(X, Y, Z)
+#fig2 = plt.figure()
+#ax = fig2.add_subplot(1,1,1, projection="3d")
+
+# labels
 ax.set_xlabel('X axis')
 ax.set_ylabel('Y axis')
 ax.set_zlabel('Z axis')
-ax.set_xlim(-30, 60)
-ax.set_ylim(0, 40)
-ax.set_zlim(0, 1000)
+# limits
+#ax.set_xlim(-30, 60)
+#ax.set_ylim(0, 40)
+#ax.set_zlim(0, 1000)
 plt.show()
