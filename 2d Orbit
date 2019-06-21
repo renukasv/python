@@ -1,0 +1,87 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Jun 21 10:48:54 2019
+
+@author: renuka
+"""
+
+import numpy as np
+from scipy.integrate import odeint
+import matplotlib.pyplot as plt
+from math import *
+#from mpl_toolkits.mplot3d import Axes3D
+
+def func(f, T, M):
+    # f
+    t, r, theta, phi, pt, pr, ptheta, pphi = f
+    # derivatives
+    dpthetadT = (cos(theta)*(ptheta)**2)/((r**2)*sin(phi)**3)
+    dprdT = (pphi**2/r**3)-(M/(r-2*M)**2)-((M*pr**2)/r**2)
+    dtdT = (1+(2*M/r))*pt
+    drdT = (1-(2*M/r)*pr)
+    dthetadT = ptheta/(r**2)
+    dphidT = pphi/((r**2)*(sin(theta)**2))
+    return np.array([dtdT, drdT, dthetadT, dphidT, dptdT, dprdT, dpthetadT, dpphidT])
+
+# initial conditions and constants
+G = 6.67428 * 10**-11
+c = 299792458
+pt = -1
+dptdT = 0
+ptheta = 0
+dpphidT = 0
+M = 5000
+t0 = 0
+r0 = ((2*G*M)/(c**2)) + 2000
+theta = np.radians(pi/2)
+phi0 = np.radians(pi/4) # angular momentum p = "amount of rotational motion"
+pr0 = 0.5 # between 0.5 and 0.6s¿ 0.5 works the best
+ptheta0 = 0
+pphi0 = 3.8
+
+f0=np.array([t0, r0, theta, phi0, pt, pr0, ptheta0, pphi0]) # initial conditions, necessary to find the constants after the return operation 
+
+T = np.linspace(0, 1350, 9000) # time variation between 0s and 1360s with a total of 900 calculations
+# with r0 = [...] + 2000 : between 0s and 1350-4000s\[4000]
+# with r0 = [...] + 4000 : between 0s and 6900-
+
+xx=odeint(func, f0, T, args=(M,)) # generate the solution, args=() is to add M to the equations
+
+r = xx[:, 1]
+theta = xx[:, 2]
+phi = xx[:, 3]
+
+# spherical to cartesian coordinates 
+X = r * np.cos(phi) * np.sin(theta)
+Y = r * np.sin(phi) * np.sin(theta)
+#Z = r * np.cos(theta)
+
+# black sphere
+fig = plt.figure(2)
+ax = fig.add_subplot(111, projection="3d")
+u = np.linspace(0, 2 * np.pi, 100)
+v = np.linspace(0, np.pi, 100)
+
+
+r = rs = 2*G*M/c**2
+
+x = r * np.outer(np.cos(u), np.sin(v))
+y = r * np.outer(np.sin(u), np.sin(v))
+#z = r * np.outer(np.ones(np.size(u)), np.cos(v))
+# plot black sphere
+#ax.plot_surface(x, y, z, rstride=4, cstride=4, color='k')
+# plot trajectory
+ax.plot(X, Y)
+#fig2 = plt.figure()
+#ax = fig2.add_subplot(1,1,1, projection="3d")
+
+# labels
+ax.set_xlabel('X axis')
+ax.set_ylabel('Y axis')
+#ax.set_zlabel('Z axis')
+# limits
+#ax.set_xlim(-30, 60)
+#ax.set_ylim(0, 40)
+#ax.set_zlim(0, 1000)
+plt.show()
