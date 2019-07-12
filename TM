@@ -15,13 +15,14 @@ from mpl_toolkits.mplot3d import Axes3D
 #import mpl_toolkits.mplot3d.axes3d as p3
 #import matplotlib.animation as animation
 
-# initial conditions who won't change
+# initial conditions, constants
 ptheta = 0
 rs = 2
 t0 = 0
 theta = np.pi/2
 # dptdT = 0
 
+# equations of motion
 def func(f, T, rs):
     # f
     t, r, theta, phi, pt, pr, ptheta, pphi = f
@@ -36,10 +37,6 @@ def func(f, T, rs):
     dpphidT = 0 #pphi/((r**2)*(sp.sin(theta)**2)) #0
     return(dtdT, drdT, dthetadT, dphidT, dptdT, dprdT, dpthetadT, dpphidT)
 
-##def hamiltonian(t, r, theta, phi, pt, pr, ptheta, pphi):
-##    H = -((1-rs/r)**-1)*(pt**2)/2 + (1-rs/r)*(pr**2)/2 + (pphi**2)/(2*(r**2))
-##    return H
-
 # initial coordinates
 r0 = 12*rs
 r1 = 50*rs
@@ -49,7 +46,7 @@ phi0 = np.pi
 phi1 = np.pi/2
 phi2 = np.pi/3
 phi3 = np.pi
-pr0 = 0 #0.1              #pr = 0 => circular orbit ¿
+pr0 = 0 #0.1             
 pr1 = 0.03
 pr2 = 0.1
 pr3 = 0
@@ -58,6 +55,7 @@ pphi1 = 4
 pphi2 = 2 #(WEIRD), 3
 pphi3 = 7 #3
 
+# pt must be calculated since G and c = 1 , otherwise ≠ photon (H=0)
 def time_momentum(r, pr, pphi):
     pt = -(sqrt((((1-(rs/r))**2)*(pr**2)) + (pphi**2)*(1-rs/r)/(r**2)))
     return(pt)
@@ -67,32 +65,11 @@ pt1 = time_momentum(r1, pr1, pphi1)
 pt2 = time_momentum(r2, pr2, pphi2)
 pt3 = time_momentum(r3, pr3, pphi3)
 
-#[0,70*rs,pi/2,pi/7,pt,0.7, 0, 0.2]
-#[0,4*rs,pi/2,pi/8,pt,0.8, 0, 0.4]
-#[0,6*rs,pi/2,pi/9,pt,0.9, 0, 0.9]
-#[0,90*rs,pi/2,pi,pt,2, 0, 0.8]
-#[0,12*rs,pi/2,2*pi,pt,0.2, 0, 1]
-#[0,56*rs,pi/2,pi/4,pt,0.1, 0, 3]
-#[0,78*rs,pi/2,pi/2,pt,0.2, 0, 0.6]
-#[0,62*rs,pi/2,pi/7,pt,3, 0, 0.3]
-#[0,10*rs,pi/2,pi/3,pt,6, 0, 0.8]
-#[0,20*rs,pi/2,pi/9,pt,2, 0, 0.9]
-#[0,30*rs,pi/2,pi,pt,0.6, 0, 0.2]
-#[0,10*rs,pi/2,3*pi,pt,0.5, 0, 0.1]
-
 f0=[t0, r0, theta, phi0, pt0, pr0, ptheta, pphi0] # red
 g0=[t0, r1, theta, phi1, pt1, pr1, ptheta, pphi1] # blue
 h0=[t0, r2, theta, phi2, pt2, pr2, ptheta, pphi2] # green
 i0=[t0, r3, theta, phi3, pt3, pr3, ptheta, pphi3] # yellow
-
-##print("Hamiltonian")
-##print(H)
-##if np.amax(H) < 6e-17:
-##    print("Your results are correct")
-##else:
-##    print("Your results are wrong")
-    
-
+   
 T = np.linspace(0, 2250, 9000)
 
 xx=odeint(func, f0, T, args=(rs,)) # generate the solution, args=() is to add rs to the equations
@@ -172,14 +149,6 @@ if np.amax(H3) < 6e-12:
     print("Your results are correct")
 else:
     print("Your results are wrong")
-    
-# checking the thetas = pi/2
-print("THE THETAS :")
-print(theta00)
-print(theta11)
-print(theta22)
-print(theta33)
-print("END")
 
 # spherical to cartesian coordinates 
 def sph2cart(r, phi, theta):
@@ -193,50 +162,7 @@ X1, Y1, Z1 = sph2cart(r11, phi11, theta11)
 X2, Y2, Z2 = sph2cart(r22, phi22, theta22)
 X3, Y3, Z3 = sph2cart(r33, phi33, theta33)
 
-
-# Z values (checking if Z=0)
-print("Z-Coordinates")
-print("Z0 max")
-if np.amax(Z0) < 6e-8:
-    print("Your results are correct")
-else:
-    print("Your results are wrong")
-    
-print("Z1 max")
-if np.amax(Z1) < 6e-8:
-    print("Your results are correct")
-else:
-    print("Your results are wrong")
-    
-print("Z2 max")
-if np.amax(Z2) < 6e-8:
-    print("Your results are correct")
-else:
-    print("Your results are wrong")
-    
-print("Z3 max")
-if np.amax(Z3) < 6e-8:
-    print("Your results are correct")
-else:
-    print("Your results are wrong")
-    
-print(Z0)
-print(Z1)
-print(Z2)
-print(Z3)
-
-print("END")
-
-# r coordinates
-print("R :")
-print(r00)
-print(r11)
-print(r22)
-print(r33)
-print("END")
-
-
-# black sphere
+# black sphere (black hole)
 fig = plt.figure()
 ax = fig.add_subplot(111, projection="3d")
 u = np.linspace(0, 2 * np.pi, 100)
