@@ -36,25 +36,25 @@ def func(f, T, rs):
 
 # initial coordinates
 r0 = 1.5*rs
-r1 = 2*rs # 1.9 tourne puis va dedans
-r2 = 10*rs
-r3 = 30*rs
+r1 = 5*rs # 1.9 tourne puis va dedans
+r2 = 3*rs
+r3 = 10*rs
 r4 = 10*rs
 phi0 = 0
 phi1 = np.pi/20
-phi2 = np.pi/15
+phi2 = np.pi/2
 phi3 = 2*np.pi
-phi4 = 3*np.pi
+phi4 = 5*np.pi
 pr0 = 0 
-pr1 = -0.3           
-pr2 = -0.3
-pr3 = -0.5
-pr4 = -1
+pr1 = -0.1         # between -0.3 and 1
+pr2 = 2
+pr3 = -0.4
+pr4 = -0.5 # the smaller pr is, the more affected by the gravity of the black hole it will be. 
 pphi0 = 4
-pphi1 = 2 # 0.5 => photon goes right in the black hole, 2 => tourne autour 1 fois
-pphi2 = 1
+pphi1 = 15 # 0.5 => photon goes right in the black hole, 2 => tourne autour 1 fois
+pphi2 = 2
 pphi3 = 2
-pphi4 = 0.5
+pphi4 = 2 # je kleiner pphi, desto gekrümmter die umlaufbahn
 
 def time_momentum(r, pr, pphi):
     pt = -(sqrt((((1-(rs/r))**2)*(pr**2)) + (pphi**2)*(1-rs/r)/(r**2)))
@@ -69,7 +69,7 @@ pt4 = time_momentum(r4, pr4, pphi4)
 f0=[t0, r0, theta, phi0, pt0, pr0, ptheta, pphi0] # red
 g0=[t0, r1, theta, phi1, pt1, pr1, ptheta, pphi1] # blue
 h0=[t0, r2, theta, phi2, pt2, pr2, ptheta, pphi2] # green
-i0=[t0, r3, theta, phi3, pt3, pr3, ptheta, pphi3] # yellow
+i0=[t0, r3, theta, phi3, pt3, pr3, ptheta, pphi3] # fuchsia
 j0=[t0, r4, theta, phi4, pt4, pr4, ptheta, pphi4] # turquoise
 
 T = np.linspace(0, 1000, 9000)
@@ -118,6 +118,7 @@ pt44 = vv[:, 4]
 pr44 = vv[:, 5]
 pphi44 = vv[:, 7]
 
+
 # checking H = 0
 print("Hamiltonians")
     
@@ -130,7 +131,7 @@ def Hamiltonian(r, pt, pr, pphi):
     return(H)    
 
 def singularity(H, r):
-    if (r).any < 1.5*rs:
+    if np.amin(r) < 1.5*rs:
         print(H)
     else:
         print("0")
@@ -139,8 +140,8 @@ def singularity(H, r):
 
 
     
-#sing0=singularity(Hamiltonian(r00, pt00, pr00, pphi00), r00)        
-#print(sing0)
+sing0=singularity(Hamiltonian(r00, pt00, pr00, pphi00), r00)        
+print(sing0)
         
 print(Hamiltonian(r00, pt00, pr00, pphi00))   
 
@@ -172,7 +173,8 @@ def sph2cart(r, phi, theta):
 
 X0, Y0, Z0 = sph2cart(r00, phi00, theta00)
 X1, Y1, Z1 = sph2cart(r11, phi11, theta11)
-X2, Y2, Z2 = sph2cart(r22, phi22, theta22)
+r22_masked = np.ma.masked_where(r22 < 1.7*rs , r22)
+X2, Y2, Z2 = sph2cart(r22_masked, phi22, theta22)
 X3, Y3, Z3 = sph2cart(r33, phi33, theta33)
 X4, Y4, Z4 = sph2cart(r44, phi44, theta44)
 
@@ -219,6 +221,8 @@ print(pphi33)
 print(pphi44)
 print("END")
 
+
+print(yy[:, 5])
 # black sphere
 fig = plt.figure()
 ax = fig.add_subplot(111, projection="3d")
@@ -230,25 +234,29 @@ x = rs * np.outer(np.cos(u), np.sin(v))
 y = rs * np.outer(np.sin(u), np.sin(v))
 z = rs * np.outer(np.ones(np.size(u)), np.cos(v))
 
-# plot black sphere
-ax.plot_surface(x, y, z, rstride=4, cstride=4, color='k')
 
 # plot trajectories
-plt.plot(X0, Y0, Z0, 'r')
+#plt.plot(X0, Y0, Z0, 'r')
 plt.plot(X1, Y1, Z1, 'b')
-# plt.plot(X2, Y2, Z2, 'g')
-plt.plot(X3, Y3, Z3, 'y')
-plt.plot(X4, Y4, Z4, 'turquoise')
+#plt.plot(X2, Y2, Z2, 'g')
+#plt.plot(X3, Y3, Z3, 'fuchsia')
+#plt.plot(X4, Y4, Z4, 'turquoise')
 
-axlim = 5
+axlim = 20
 
 # limits
 ax.set_xlim(-axlim, axlim)
 ax.set_ylim(-axlim, axlim)
 ax.set_zlim(-axlim, axlim)
+
+# plot black sphere
+ax.plot_surface(x, y, z, rstride=4, cstride=4, color='k')
 # labels
 ax.set_xlabel('X axis')
 ax.set_ylabel('Y axis')
 ax.set_zlabel('Z axis')
+
+# save fig
+#plt.savefig('orbit22.eps', bbox_inches='tight', dpi=1000)
 
 plt.show()
